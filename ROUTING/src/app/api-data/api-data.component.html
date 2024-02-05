@@ -1,0 +1,4 @@
+<label for="txtNum" >Inserisci il numero di utenti da generare</label>
+<input type="number" id="txtNum" class="form-control mt-1 mb-3" placeholder="numero utenti" [(ngModel)]="numUser">
+<button class="btn btn-primary mt-3 mb-3 w-100" (click)="getData()">Get Data</button>
+<button class="btn btn-danger mt-3 mb-3 w-100" (click)="visData()" [disabled]="!visualizzaDati">Visualizza User</button>

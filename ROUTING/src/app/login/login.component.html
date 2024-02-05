@@ -1,0 +1,45 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete='off' class='form'>
+  <div class='control text-center' >
+    <h1 style="font-weight: bold; font-size: 28pt">
+      LOGIN
+    </h1>
+  </div>
+  <div class='control block-cube block-input'>
+    <input formControlName='username' name='username' placeholder='Email' type='email' >
+    <div class='bg-top'>
+      <div class='bg-inner'></div>
+    </div>
+    <div class='bg-right'>
+      <div class='bg-inner'></div>
+    </div>
+    <div class='bg'>
+      <div class='bg-inner'></div>
+    </div>
+  </div>
+  <div class='control block-cube block-input'>
+    <input formControlName='password' name='password' placeholder='Password' type='password'>
+    <div class='bg-top'>
+      <div class='bg-inner'></div>
+    </div>
+    <div class='bg-right'>
+      <div class='bg-inner'></div>
+    </div>
+    <div class='bg'>
+      <div class='bg-inner'></div>
+    </div>
+  </div>
+  <button class='btn block-cube block-cube-hover' type='submit'>
+    <div class='bg-top'>
+      <div class='bg-inner'></div>
+    </div>
+    <div class='bg-right'>
+      <div class='bg-inner'></div>
+    </div>
+    <div class='bg'>
+      <div class='bg-inner'></div>
+    </div>
+    <div class='text'>
+      ACCEDI
+    </div>
+  </button>
+</form>
