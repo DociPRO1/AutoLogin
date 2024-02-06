@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {WebserviceService} from "../service/webservice.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import {WebserviceService} from "../service/webservice.service";
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private websService: WebserviceService) { } // inject WebserviceService here
+  constructor(private formBuilder: FormBuilder, private websService: WebserviceService, private router:Router) { } // inject WebserviceService here
 
 
   ngOnInit(): void {

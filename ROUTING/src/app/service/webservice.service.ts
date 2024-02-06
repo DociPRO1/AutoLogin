@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import {ConnectionService} from "./connection.service";
+import {Router} from "@angular/router";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebserviceService {
 
-    constructor(private connectionService: ConnectionService) {
+    constructor(private connectionService: ConnectionService, private router: Router) {
     }
 
     serverData: any = [];
     dataZips: any = [];
     mySqlUsers: any = [];
+    myCars: any = [];
 
     getUsers(numUsers: number) {
         this.connectionService.sendGetRequest(numUsers).subscribe(
@@ -74,6 +77,29 @@ export class WebserviceService {
 
     }
 
+    async getCarsSql(endPoint: string) {
+        await new Promise((resolve,reject) =>
+            this.connectionService.getCars(endPoint).subscribe(
+                (data: any) => {
+                    console.log(data);
+                    this.myCars = data;
+                    resolve(data);
+                },
+                (error: any) => {
+                    console.log("Errore Get Server Data")
+                    console.log(error)
+                    reject(error);
+                }
+
+            )
+        )
+
+
+
+
+    }
+
+    loginData : any = [];
     verifyLogin(email: string, password: string) {
 
         let par = {
@@ -83,6 +109,14 @@ export class WebserviceService {
         this.connectionService.sendVerifyLogin('verifyLogin', par).subscribe(
             (data: any) => {
                 console.log(data);
+                if (data.successo == 'ok')
+                {
+                    this.router.navigate(['/auto']);
+
+                }
+                else {
+                    alert("Errore Login")
+                }
             },
             (error: any) => {
                 console.log("Errore esecuzione web service post")

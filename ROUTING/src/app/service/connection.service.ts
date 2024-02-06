@@ -27,6 +27,11 @@ let options = {headers: new HttpHeaders().set('Content-Type', 'application/x-www
 return this.httpClient.post(this.URL_SERVICE_ZIPS + endPoint, par, options);
   }
 
+  public getCars(endPoint: string) {
+    console.log(this.URL_SERVICE_ZIPS + endPoint);
+    return this.httpClient.get(this.URL_SERVICE_ZIPS + endPoint);
+  }
+
   public sendVerifyLogin(endPoint: string, par: any) {
     let options = {headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')};
     return this.httpClient.post(this.URL_SERVICE_ZIPS + endPoint, par, options)  }

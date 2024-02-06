@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WebserviceService } from '../service/webservice.service';
 
 @Component({
   selector: 'auto',
@@ -7,13 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AutoComponent implements OnInit{
   private url: string = 'http://localhost:8888/';
+
   data: any;
+
+    constructor(public webserviceService: WebserviceService) {
+    }
   async ngOnInit(){
-    await fetch(this.url)
-      .then(response => response.json())  // restituisce un parametro json che sono i dati ottenuti dal ws
-      .then(json => {this.data=json;
-        console.log(this.data);
-      })
-      .catch(err => console.log('Request Failed', err));
+    await this.webserviceService.getCarsSql('getCars');
+    console.log(this.webserviceService.myCars);
   }
 }

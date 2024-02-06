@@ -9,6 +9,7 @@ let server = http.createServer((richiesta, risposta) => {
     let indirizzoRichiesta =  url.parse(richiesta.url, true);
     let nomeRisorsa = indirizzoRichiesta.pathname;
     let param;
+    let con;
     console.log(indirizzoRichiesta);
     console.log(nomeRisorsa);
 
@@ -48,7 +49,7 @@ let server = http.createServer((richiesta, risposta) => {
             break;
 
             case '/getUsersMySql':
-                let con = mysql.createConnection({
+                 con = mysql.createConnection({
                     host:"localhost",
                     user:"root",
                     password:"",
@@ -78,9 +79,45 @@ let server = http.createServer((richiesta, risposta) => {
                     con.end();
 
                 });
+                break;
+        case'/getCars':
+            console.log("Richiesta ricevuta su /getAllCars");
+
+            con = mysql.createConnection({
+                host:"localhost",
+                user:"root",
+                password:"",
+                database:"automobili"
+            });
+
+            con.connect((err) => {
+                if (err){
+                    console.log("Errore di connessione al database");
+                    risposta.end("Errore di connessione al database");
+                } else {
+                    console.log("Connected!");
+                    con.query('SELECT * FROM modelli', (errQ, result) => {
+                        if (errQ) {
+                            console.log("Errore di esecuzione della query Modelli");
+                            risposta.end("Errore di esecuzione della query Modelli");
+                        } else {
+                            console.log("Query eseguita con successo");
+                            risposta.writeHead(200, header);
+                            risposta.end(JSON.stringify(result));
+                        }
+                    });
+                }
+                con.end();
+            });
+            break;
+
+
+
+
+
 
         case('/verifyLogin'):
-            console.log("Richiesta ricevuta su /verifyLogin"); // Aggiungi questo log
+            console.log("Richiesta ricevuta su /verifyLogin");
             param = "";
             richiesta.on('data', (data) => {
                 param += data;
@@ -89,7 +126,7 @@ let server = http.createServer((richiesta, risposta) => {
                 postParam = JSON.parse(param);
                 console.log("Data: " + postParam.e + " " + postParam.p);
 
-                let con = mysql.createConnection({
+                 con = mysql.createConnection({
                     host:"localhost",
                     user:"root",
                     password:"",
@@ -108,8 +145,18 @@ let server = http.createServer((richiesta, risposta) => {
                                 risposta.end("Errore di esecuzione della query Utenti");
                             } else {
                                 console.log("Query eseguita con successo");
-                                risposta.writeHead(200, header);
-                                risposta.end(JSON.stringify(result));
+                                if (result.length > 0) {
+                                    let response = {
+                                        successo: 'ok',
+                                        id: result[0].id,
+                                        admin: result[0].admin
+                                    };
+                                    risposta.writeHead(200, header);
+                                    risposta.end(JSON.stringify(response));
+                                } else {
+                                    risposta.writeHead(200, header);
+                                    risposta.end(JSON.stringify({ successo: 'no' }));
+                                }
                             }
                         });
                     }
