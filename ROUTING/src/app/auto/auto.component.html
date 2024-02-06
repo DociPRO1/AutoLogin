@@ -1,2 +1,57 @@
-<h1>Elenco delle auto a catalogo</h1>
-<h5 *ngFor="let item of data">{{item | json}}</h5>
+<div style="display: flex">
+<div class="car-container" style="margin-top: 50px" >
+    <div *ngFor="let car of auto; let i = index" class='control block-cube block-input'>
+        <div style="height: 280px; width: 220px; color: white; z-index: 1000">
+
+        </div>
+        <div class='bg-top'>
+            <div class='bg-inner'></div>
+        </div>
+        <div class='bg-right'>
+            <div class='bg-inner'></div>
+        </div>
+        <div class='bg'>
+            <div class='bg-inner' style="color: white">
+                <p style="font-size: 20pt">Marca: {{car.marca}}</p>
+                <p>Modello: {{car.nome}}</p>
+                <p>Cilindrata: {{car.cilindrata}}</p>
+                <p>Prezzo: {{car.prezzo}} $</p>
+                <p>Anno: {{car.anno}}</p>
+                <button class="btn btn-primary" (click)="buyCar(car)">Acquista</button>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+    <!--*ngIf="this.credentials.admin == 's'"-->
+    <div     *ngIf="this.credentials.admin == 's'"
+    class="admin-panel">
+        <h2>INSERISCI UNA NUOVA AUTO</h2>
+        <form [formGroup]="carForm" (ngSubmit)="onSubmit()">
+            <label for="id">ID:</label><br>
+            <input type="text" id="id" formControlName="id"><br>
+            <label for="nome">Nome:</label><br>
+            <input type="text" id="nome" formControlName="nome"><br>
+            <label for="codMarca">Marca:</label><br>
+            <select id="codMarca" formControlName="codMarca">
+                <option *ngFor="let car of auto" [value]="car.codMarca">{{car.marca}}</option>
+            </select><br><label for="nPorte">Numero Porte:</label><br>
+            <input type="text" id="nPorte" formControlName="nPorte"><br>
+            <label for="cilindrata">Cilindrata:</label><br>
+            <input type="text" id="cilindrata" formControlName="cilindrata"><br>
+            <label for="colore">Colore:</label><br>
+            <input type="text" id="colore" formControlName="colore"><br>
+            <label for="anno">Anno:</label><br>
+            <input type="text" id="anno" formControlName="anno"><br>
+            <label for="prezzo">Prezzo:</label><br>
+            <input type="text" id="prezzo" formControlName="prezzo"><br>
+            <label for="targa">Targa:</label><br>
+            <input type="text" id="targa" formControlName="targa"><br>
+            <label for="km">Kilometri:</label><br>
+            <input type="text" id="km" formControlName="km"><br><br>
+            <input type="submit" value="INSERISCI">
+        </form>
+    </div>
+</div>

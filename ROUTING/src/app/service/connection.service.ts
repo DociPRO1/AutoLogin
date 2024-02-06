@@ -35,4 +35,14 @@ return this.httpClient.post(this.URL_SERVICE_ZIPS + endPoint, par, options);
   public sendVerifyLogin(endPoint: string, par: any) {
     let options = {headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')};
     return this.httpClient.post(this.URL_SERVICE_ZIPS + endPoint, par, options)  }
+
+  public sellCar(endPoint: string, par: any) {
+    let options = {headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')};
+    return this.httpClient.post(this.URL_SERVICE_ZIPS + endPoint, par, options);
+  }
+  public addCar(endPoint: string, par: any) {
+    let options = {headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')};
+    return this.httpClient.post(this.URL_SERVICE_ZIPS + endPoint, par, options);
+  }
+
 }

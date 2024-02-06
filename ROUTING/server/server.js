@@ -96,7 +96,7 @@ let server = http.createServer((richiesta, risposta) => {
                     risposta.end("Errore di connessione al database");
                 } else {
                     console.log("Connected!");
-                    con.query('SELECT * FROM modelli', (errQ, result) => {
+                    con.query('SELECT modelli.*, marche.nome AS marca FROM modelli JOIN marche ON modelli.codMarca = marche.id', (errQ, result) => {
                         if (errQ) {
                             console.log("Errore di esecuzione della query Modelli");
                             risposta.end("Errore di esecuzione della query Modelli");
@@ -110,6 +110,81 @@ let server = http.createServer((richiesta, risposta) => {
                 con.end();
             });
             break;
+        case '/addCar':
+            console.log("Richiesta ricevuta su /addCar");
+            param = "";
+            richiesta.on('data', (data) => {
+                param += data;
+            });
+            richiesta.on('end', () => {
+                param = JSON.parse(param);
+                console.log(param);
+                con = mysql.createConnection({
+                    host:"localhost",
+                    user:"root",
+                    password:"",
+                    database:"automobili"
+                });
+                con.connect((err) => {
+                    if (err){
+                        console.log("Errore di connessione al database");
+                        risposta.end("Errore di connessione al database");
+                    } else {
+                        console.log("Connected!");
+                        con.query('INSERT INTO modelli (id, nome, codMarca, nPorte, cilindrata, colore, anno, prezzo, targa, km) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                            [param.id, param.nome, param.codMarca, param.nPorte, param.cilindrata, param.colore, param.anno, param.prezzo, param.targa, param.km],
+                            (errQ, result) => {
+                                if (errQ) {
+                                    console.log("Errore di esecuzione della query Modelli");
+                                    risposta.end("Errore di esecuzione della query Modelli");
+                                } else {
+                                    console.log("Query eseguita con successo");
+                                    risposta.writeHead(200, header);
+                                    risposta.end(JSON.stringify({ successo: 'ok' }));
+                                }
+                            });
+                    }
+                    con.end();
+                });
+            });
+            break;
+
+            case '/sellCar':
+            console.log("Richiesta ricevuta su /sellCar");
+            param = "";
+                richiesta.on('data', (data) => {
+                    param += data;
+                });
+                richiesta.on('end', () => {
+                    param = JSON.parse(param);
+                    con = mysql.createConnection({
+                        host:"localhost",
+                        user:"root",
+                        password:"",
+                        database:"automobili"
+                    });
+                    con.connect((err) => {
+                        if (err){
+                            console.log("Errore di connessione al database");
+                            risposta.end("Errore di connessione al database");
+                        } else {
+                            console.log("Connected!");
+                            con.query('INSERT INTO logvendite (idModello, idUtente, prezzo, data) VALUES (?, ?, ?, ?)', [param.id, param.cid, param.prezzo, param.data], (errQ, result) => {
+                                if (errQ) {
+                                    console.log("Errore di esecuzione della query Vendite");
+                                    risposta.end("Errore di esecuzione della query Vendite");
+                                } else {
+                                    console.log("Query eseguita con successo");
+                                    risposta.writeHead(200, header);
+                                    risposta.end(JSON.stringify({ successo: 'ok' }));
+                                }
+                            });
+                        }
+                        con.end();
+                    });
+                });
+
+                break;
 
 
 

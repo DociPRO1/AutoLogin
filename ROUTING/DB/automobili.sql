@@ -25,7 +25,11 @@ SET time_zone = "+00:00";
 
 --
 -- Struttura della tabella `marche`
---
+CREATE TABLE `logvendite` (
+                              `idModello` int(11) NOT NULL,
+                              `idUtente` int(11) NOT NULL,
+                              `prezzo` DECIMAL(10,2) NOT NULL,
+                              `data` DATE NOT NULL)
 
 CREATE TABLE `marche` (
                           `id` int(11) NOT NULL,

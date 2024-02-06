@@ -76,6 +76,28 @@ export class WebserviceService {
         )
 
     }
+    vendiAuto(endPoint: string, par: any) {
+        this.connectionService.sellCar(endPoint, par).subscribe(
+            (data: any) => {
+                console.log(data);
+            },
+            (error: any) => {
+                console.log("Errore esecuzione web service post")
+                console.log(error)
+            }
+        )
+    }
+    addCar(endPoint: string, par: any) {
+        this.connectionService.addCar(endPoint, par).subscribe(
+            (data: any) => {
+                console.log(data);
+            },
+            (error: any) => {
+                console.log("Errore esecuzione web service post")
+                console.log(error)
+            }
+        )
+    }
 
     async getCarsSql(endPoint: string) {
         await new Promise((resolve,reject) =>
@@ -100,28 +122,32 @@ export class WebserviceService {
     }
 
     loginData : any = [];
-    verifyLogin(email: string, password: string) {
+    async verifyLogin(email: string, password: string) {
+        await new Promise((resolve,reject) =>
 
-        let par = {
-            e: email,
-            p: password
-        }
-        this.connectionService.sendVerifyLogin('verifyLogin', par).subscribe(
-            (data: any) => {
-                console.log(data);
-                if (data.successo == 'ok')
-                {
-                    this.router.navigate(['/auto']);
+            this.connectionService.sendVerifyLogin('verifyLogin', {e: email, p: password}).subscribe(
+                (data: any) => {
+                    console.log(data);
 
+                    if (data.successo == 'ok')
+                    {
+                        this.loginData = data;
+                        this.router.navigate(['/auto']);
+
+                    }
+                    else {
+                        alert("Errore Login")
+                    }
+                    resolve(data);
+                },
+                (error: any) => {
+                    console.log("Errore Get Server Data")
+                    console.log(error)
+                    reject(error);
                 }
-                else {
-                    alert("Errore Login")
-                }
-            },
-            (error: any) => {
-                console.log("Errore esecuzione web service post")
-                console.log(error)
-            }
+            )
         )
+
+
     }
 }
