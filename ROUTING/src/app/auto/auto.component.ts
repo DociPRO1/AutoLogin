@@ -8,6 +8,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./auto.component.css']
 })
 export class AutoComponent implements OnInit {
+  filter: string = '';
+  auto: any = [];
+  credentials: any = [];
+  marche: string[] = [];
+
   carForm: FormGroup = this.formBuilder.group({
     id: ['', Validators.required],
     nome: ['', Validators.required],
@@ -22,9 +27,6 @@ export class AutoComponent implements OnInit {
   });
 
   private url: string = 'http://localhost:8888/';
-  auto: any = [];
-  credentials: any = [];
-  marche: string[] = [];
 
   data: any;
 
@@ -42,12 +44,18 @@ export class AutoComponent implements OnInit {
 
   onSubmit() {
     if (this.carForm.valid) {
-        console.log('Form Submitted!', this.carForm.value);
-        this.webserviceService.addCar('addCar', this.carForm.value);
+      console.log('Form Submitted!', this.carForm.value);
+      this.webserviceService.addCar('addCar', this.carForm.value);
     }
   }
 
   buyCar(car: any) {
     this.webserviceService.vendiAuto('sellCar', { id: car.id, cid: this.credentials.id, prezzo: car.prezzo, data: new Date().toISOString().slice(0, 19).replace('T', ' ') });
+  alert('Auto acquistata con successo!')
+  }
+
+  dettagli(car: any) {
+    let carInfo = `Marca: ${car.marca}\nModello: ${car.nome}\nCilindrata: ${car.cilindrata}\nPrezzo: ${car.prezzo}\nAnno: ${car.anno}\nCodice Marca: ${car.codMarca}\nColore: ${car.colore}\nID: ${car.id}\nKilometri: ${car.km}\nNumero Porte: ${car.nPorte}\nTarga: ${car.targa}`;
+    alert(carInfo);
   }
 }
