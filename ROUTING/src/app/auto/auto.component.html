@@ -1,6 +1,6 @@
 
-<div style="display: flex">
-    <div class="car-container" style="margin-top: 50px" >
+<div style="display: flex" ng>
+    <div class="car-container" style="margin-top: 50px" *ngIf="credentials.successo === 'ok'">
         <input STYLE="background: lightblue; color: black" [(ngModel)]="filter" placeholder="Ricerca per marca">
 
         <ng-container *ngFor="let car of auto; let i = index">
@@ -51,6 +51,7 @@
                 </div>
             </div>
         </ng-container>
+        </div>
 
         <div *ngIf="this.credentials.admin == 's'" class="admin-panel">
             <h2>INSERISCI UNA NUOVA AUTO</h2>
@@ -61,8 +62,9 @@
                 <input type="text" id="nome" formControlName="nome"><br>
                 <label for="codMarca">Marca:</label><br>
                 <select id="codMarca" formControlName="codMarca">
-                    <option *ngFor="let car of auto" [value]="car.codMarca">{{car.marca}}</option>
-                </select><br>
+                    <option *ngFor="let brand of marche" [value]="getBrandCode(brand)">{{ brand }}</option>
+                </select>
+
                 <label for="nPorte">Numero Porte:</label><br>
                 <input type="text" id="nPorte" formControlName="nPorte"><br>
                 <label for="cilindrata">Cilindrata:</label><br>
@@ -81,6 +83,5 @@
             </form>
         </div>
     </div>
-</div>
 
 

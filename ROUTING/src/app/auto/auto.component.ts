@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WebserviceService } from '../service/webservice.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'auto',
@@ -29,8 +30,10 @@ export class AutoComponent implements OnInit {
   private url: string = 'http://localhost:8888/';
 
   data: any;
+  uniqueBrands: any[] = [];
 
-  constructor(public webserviceService: WebserviceService, private formBuilder: FormBuilder) {
+
+  constructor(public webserviceService: WebserviceService, private formBuilder: FormBuilder, private router: Router) {
   }
 
   async ngOnInit() {
@@ -38,15 +41,37 @@ export class AutoComponent implements OnInit {
     console.log(this.webserviceService.myCars);
     this.auto = this.webserviceService.myCars;
     this.credentials = this.webserviceService.loginData;
+    this.extractUniqueBrands();
 
-    this.marche = Array.from(new Set(this.auto.map((car: any) => car.marca)));
+
+    if (this.credentials.successo !== 'ok') {
+      this.router.navigate(['/login']);
+    }
   }
 
   onSubmit() {
     if (this.carForm.valid) {
       console.log('Form Submitted!', this.carForm.value);
+
       this.webserviceService.addCar('addCar', this.carForm.value);
+      this.carForm.reset();
     }
+    else {
+
+    }
+
+  }
+  getBrandCode(brand: string): string {
+    const car = this.auto.find((c: any) => c.marca === brand);
+    return car ? car.codMarca : '';
+  }
+
+  extractUniqueBrands() {
+    this.auto.forEach((car: any) => {
+      if (!this.marche.includes(car.marca)) {
+        this.marche.push(car.marca);
+      }
+    });
   }
 
   buyCar(car: any) {
